@@ -1,0 +1,181 @@
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
+
+-- ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = PlayerGui
+screenGui.IgnoreGuiInset = true
+screenGui.ResetOnSpawn = false
+
+-- === إضافة الأغنية هنا ===
+local song = Instance.new("Sound")
+song.SoundId = "rbxassetid://PUT_YOUR_SOUND_ID_HERE" -- ضع معرف الأغنية هنا
+song.Looped = true
+song.Volume = 0.5
+song.Parent = screenGui
+song:Play()
+-- =========================
+
+-- الخلفية
+local bg = Instance.new("Frame")
+bg.Size = UDim2.new(1,0,1,0)
+bg.BackgroundColor3 = Color3.fromRGB(60,0,0)
+bg.Parent = screenGui
+
+-- Container للنجوم
+local starLayer = Instance.new("Frame")
+starLayer.Size = UDim2.new(1,0,1,0)
+starLayer.BackgroundTransparency = 1
+starLayer.Parent = screenGui
+
+-- نجوم خلفية
+local function spawnStar()
+    local star = Instance.new("TextLabel")
+    local size = math.random(8,16)
+    star.Size = UDim2.new(0,size,0,size)
+    star.BackgroundTransparency = 1
+    star.Text = "★"
+    star.TextColor3 = Color3.fromRGB(255,255,255)
+    star.TextScaled = true
+    star.Font = Enum.Font.SourceSansBold
+    star.Position = UDim2.new(math.random(),0,0,0)
+    star.Parent = starLayer
+    
+    local targetY = 1
+    local duration = math.random(2,5)
+    TweenService:Create(star, TweenInfo.new(duration, Enum.EasingStyle.Linear), {Position = UDim2.new(star.Position.X.Scale,0,targetY,0)}):Play()
+    
+    delay(duration, function()
+        star:Destroy()
+    end)
+end
+
+spawn(function()
+    while true do
+        spawnStar()
+        wait(0.2)
+    end
+end)
+
+-- Welcome Text
+local welcome = Instance.new("TextLabel")
+welcome.Size = UDim2.new(1,0,0.12,0)
+welcome.Position = UDim2.new(0,0,0.35,0)
+welcome.Text = "Welcome"
+welcome.TextColor3 = Color3.fromRGB(255,255,255)
+welcome.TextScaled = true
+welcome.BackgroundTransparency = 1
+welcome.Font = Enum.Font.SourceSansBold
+welcome.TextXAlignment = Enum.TextXAlignment.Center
+welcome.TextYAlignment = Enum.TextYAlignment.Center
+welcome.Parent = screenGui
+
+-- Subtitle
+local subtitle = Instance.new("TextLabel")
+subtitle.Size = UDim2.new(1,0,0.08,0)
+subtitle.Position = UDim2.new(0,0,0.43,0)
+subtitle.Text = "MatthewHub script"
+subtitle.TextColor3 = Color3.fromRGB(255,255,255)
+subtitle.TextScaled = true
+subtitle.BackgroundTransparency = 1
+subtitle.Font = Enum.Font.SourceSans
+subtitle.TextXAlignment = Enum.TextXAlignment.Center
+subtitle.TextYAlignment = Enum.TextYAlignment.Center
+subtitle.Parent = screenGui
+
+-- خط التحميل
+local barContainer = Instance.new("Frame")
+barContainer.AnchorPoint = Vector2.new(0.5,0.5)
+barContainer.Size = UDim2.new(0.4,0,0.06,0)
+barContainer.Position = UDim2.new(0.5,0,0.55,0)
+barContainer.BackgroundColor3 = Color3.fromRGB(0,0,0)
+barContainer.Parent = screenGui
+
+local uicornerBar = Instance.new("UICorner")
+uicornerBar.CornerRadius = UDim.new(0,12)
+uicornerBar.Parent = barContainer
+
+local barFill = Instance.new("Frame")
+barFill.Size = UDim2.new(0,0,1,0)
+barFill.BackgroundColor3 = Color3.fromRGB(255,0,0)
+barFill.Parent = barContainer
+
+local uicornerFill = Instance.new("UICorner")
+uicornerFill.CornerRadius = UDim.new(0,12)
+uicornerFill.Parent = barFill
+
+-- نسبة التحميل
+local percentText = Instance.new("TextLabel")
+percentText.AnchorPoint = Vector2.new(0.5,0.5)
+percentText.Size = UDim2.new(1,0,1,0)
+percentText.Position = UDim2.new(0.5,0.5,0.5,0)
+percentText.Text = "0%"
+percentText.TextColor3 = Color3.fromRGB(255,255,255)
+percentText.TextScaled = true
+percentText.BackgroundTransparency = 1
+percentText.Font = Enum.Font.SourceSansBold
+percentText.Parent = barContainer
+
+-- الخط الأبيض داخل البار
+local shine = Instance.new("Frame")
+shine.Size = UDim2.new(0.15,0,1,0)
+shine.BackgroundColor3 = Color3.fromRGB(255,255,255)
+shine.BackgroundTransparency = 0.4
+shine.ClipsDescendants = true
+shine.Parent = barContainer
+
+local uicornerShine = Instance.new("UICorner")
+uicornerShine.CornerRadius = UDim.new(0,12)
+uicornerShine.Parent = shine
+
+-- النصوص تحت البار (ديناميكية)
+local loadingText = Instance.new("TextLabel")
+loadingText.Size = UDim2.new(1,0,0.08,0)
+loadingText.Position = UDim2.new(0,0,0.63,0)
+loadingText.Text = "يتم تجهيز البيانات..."
+loadingText.TextColor3 = Color3.fromRGB(255,255,255)
+loadingText.TextScaled = true
+loadingText.BackgroundTransparency = 1
+loadingText.Font = Enum.Font.SourceSans
+loadingText.TextXAlignment = Enum.TextXAlignment.Center
+loadingText.Parent = screenGui
+
+local messages = {
+    "جارٍ تحميل الملفات...",
+    "جارٍ تجهيز الموارد...",
+    "استعد للتجربة...",
+    "تطبيق الإعدادات..."
+}
+
+-- دالة التحميل
+local function animateLoading(duration)
+    local startTime = tick()
+    local connection
+    connection = RunService.RenderStepped:Connect(function()
+        local elapsed = tick() - startTime
+        local progress = math.clamp(elapsed / duration, 0, 1)
+        barFill.Size = UDim2.new(progress,0,1,0)
+        percentText.Text = math.floor(progress * 100) .. "%"
+
+        shine.Position = UDim2.new(math.clamp(progress-0.15,0,1),0,0,0)
+
+        local index = math.floor(elapsed % #messages) + 1
+        loadingText.Text = messages[index]
+
+        if progress >= 1 then
+            connection:Disconnect()
+            song:Stop()
+            screenGui:Destroy()
+
+            -- ===== تشغيل السكربت الجديد فقط =====
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/vvVIRUSss1/ViRuS_Scrip12/refs/heads/main/Matthew%20.txt"))()
+            -- =====================================
+        end
+    end)
+end
+
+-- مدة التحميل 5 ثواني
+animateLoading(5)
