@@ -2,48 +2,91 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>روابطي</title>
+<title>فمبلا | Gaming</title>
+
 <style>
 body {
-  font-family: Arial;
-  background: #0f172a;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(270deg, #020024, #090979, #00d4ff);
+  background-size: 600% 600%;
+  animation: bg 12s ease infinite;
   color: white;
   text-align: center;
 }
-.container {
-  max-width: 400px;
-  margin: 50px auto;
+
+@keyframes bg {
+  0% {background-position:0% 50%;}
+  50% {background-position:100% 50%;}
+  100% {background-position:0% 50%;}
 }
+
+.container {
+  max-width: 420px;
+  margin: auto;
+  padding-top: 70px;
+}
+
+h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+p {
+  opacity: 0.85;
+  margin-bottom: 35px;
+}
+
 a {
   display: block;
-  background: #1e293b;
-  color: white;
-  padding: 15px;
-  margin: 15px 0;
+  margin: 20px 0;
+  padding: 16px;
+  border-radius: 15px;
   text-decoration: none;
-  border-radius: 10px;
+  color: white;
   font-size: 18px;
+  transition: 0.3s;
 }
+
+/* ألوان الأزرار */
+.discord { background: #5865F2; }
+.insta { background: linear-gradient(45deg,#f58529,#dd2a7b,#8134af); }
+.telegram { background: #229ED9; }
+
 a:hover {
-  background: #334155;
+  transform: scale(1.07);
+  box-shadow: 0 0 25px rgba(255,255,255,0.4);
+}
+
+.footer {
+  margin-top: 45px;
+  font-size: 14px;
+  opacity: 0.6;
 }
 </style>
 </head>
+
 <body>
 <div class="container">
-  <h2>روابط حساباتي</h2>
+  <h1>🎮 فمبلا</h1>
+  <p>Gaming Content • Community • Fun</p>
 
-  <a href="https://discord.gg/VAq9uMX5V" target="_blank">
-    🎮 ديسكورد gameing
+  <a class="discord" href="https://discord.gg/VAq9uMX5V" target="_blank">
+    🎮 سيرفر ديسكورد Gaming
   </a>
 
-  <a href="https://www.instagram.com/fmbla1?igsh=NndrZjYzZXRseXI2" target="_blank">
+  <a class="insta" href="https://www.instagram.com/fmbla1?igsh=NndrZjYzZXRseXI2" target="_blank">
     📸 حسابي انستغرام
   </a>
 
-  <a href="https://t.me/M1_2M" target="_blank">
+  <a class="telegram" href="https://t.me/M1_2M" target="_blank">
     ✈️ حسابي تليجرام
   </a>
+
+  <div class="footer">
+    ⚡ تابع فمبلا لكل جديد
+  </div>
 </div>
 </body>
 </html>
